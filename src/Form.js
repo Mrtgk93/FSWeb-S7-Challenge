@@ -96,7 +96,7 @@ export default function Form(props) {
               name="özel"
             />
           </p>
-          <button type="submit" id="order-button">
+          <button type="submit" data-cy="datasubmit" id="order-button">
             Siparişlere Ekle
           </button>
         </fieldset>

@@ -6,4 +6,7 @@ describe("Kayıt Formu ", function () {
     const newIsim = "Mert";
     cy.get("[data-cy=dataisim]").type(`${newIsim}{enter}`);
   });
+  it("test verileri gönderiliyor mu ?", () => {
+    cy.get("[data-cy=datasubmit]").click();
+  });
 });
