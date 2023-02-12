@@ -63,7 +63,7 @@ Cypress'le şu testleri ekleyin:
 
 - [+] inputa bir metin giren test
 - [ ] birden fazla malzeme seçilebilen bir test
-- [ ] formu gönderen bir test
+- [+] formu gönderen bir test
 
 Çözümünüzde en iyi uygulamaları izlemeniz, temiz ve profesyonel sonuçlar üretmeniz önemlidir. Organizasyon ve kod yapısına göre skorunuz belirlenecek.
 Çalışmanızı gözden geçirmek, iyileştirmek ve değerlendirmek için zaman planlayın ve çalışmanız üzerinde yazım denetimi ve dilbilgisi denetimi de dahil olmak üzere temel profesyonel düzeltmeler yapın. MVP'yi karşılayan bir challenge göndermek, çok fazla kompleksleştirilmiş ama çalışmayan bir proje göndermekten daha iyidir.
