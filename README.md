@@ -61,7 +61,7 @@ Not - payload yukarıdaki verilere benzer görünmelidir
 
 Cypress'le şu testleri ekleyin:
 
-- [ ] inputa bir metin giren test
+- [+] inputa bir metin giren test
 - [ ] birden fazla malzeme seçilebilen bir test
 - [ ] formu gönderen bir test
 
