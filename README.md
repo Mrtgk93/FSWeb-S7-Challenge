@@ -62,7 +62,7 @@ Not - payload yukarıdaki verilere benzer görünmelidir
 Cypress'le şu testleri ekleyin:
 
 - [+] inputa bir metin giren test
-- [ ] birden fazla malzeme seçilebilen bir test
+- [-] birden fazla malzeme seçilebilen bir test
 - [+] formu gönderen bir test
 
 Çözümünüzde en iyi uygulamaları izlemeniz, temiz ve profesyonel sonuçlar üretmeniz önemlidir. Organizasyon ve kod yapısına göre skorunuz belirlenecek.
