@@ -1,4 +1,11 @@
 import { useState } from "react";
+import * as Yup from "yup";
+
+const formSchema = Yup.object().shape({
+  isim: Yup.string()
+    .required("İsim alanı zorunludur")
+    .min(2, "İsim en az 2 karakter olmalıdır"),
+});
 
 export default function Form(props) {
   const { handleSubmitCallBack } = props;
@@ -11,14 +18,45 @@ export default function Form(props) {
     malzeme4: false,
     özel: "",
   });
+
+  const [errors, setErrors] = useState({
+    isim: "",
+    boyut: "",
+    malzeme1: false,
+    malzeme2: false,
+    malzeme3: false,
+    malzeme4: false,
+    özel: "",
+  });
+
+  const checkFormErrors = (name, value) => {
+    Yup.reach(formSchema, name)
+      .validate(value)
+      .then(() => {
+        setErrors({
+          ...errors,
+          [name]: "",
+        });
+      })
+      .catch((err) => {
+        setErrors({
+          ...errors,
+          [name]: err.errors[0],
+        });
+      });
+  };
+
   function changeHandlerName(e) {
+    let valueToUse =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    checkFormErrors(e.target.name, valueToUse);
     setData({
       ...data,
-      [e.target.name]:
-        e.target.type === "checkbox" ? e.target.checked : e.target.value,
+      [e.target.name]: valueToUse,
     });
     console.log(e.target.value);
   }
+  console.log(errors);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -42,6 +80,7 @@ export default function Form(props) {
               />
             </label>
           </p>
+          {errors.isim !== "" && <div>{errors.isim}</div>}
           <p>
             <label>
               Pizza Boyutu:
@@ -88,7 +127,7 @@ export default function Form(props) {
             />
           </p>
           <p>
-            <label>mesajınızı giriniz:</label>
+            <label>Özel Seçim:</label>
             <input
               onChange={changeHandlerName}
               type="text"
