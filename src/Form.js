@@ -5,6 +5,12 @@ const formSchema = Yup.object().shape({
   isim: Yup.string()
     .required("İsim alanı zorunludur")
     .min(2, "İsim en az 2 karakter olmalıdır"),
+  boyut: Yup.string().required("lütfen seçiniz"),
+  malzeme1: Yup.bool().oneOf([false]),
+  malzeme2: Yup.bool().oneOf([false]),
+  malzeme3: Yup.bool().oneOf([false]),
+  malzeme4: Yup.bool().oneOf([false]),
+  özel: Yup.string().notRequired(),
 });
 
 export default function Form(props) {
@@ -54,9 +60,9 @@ export default function Form(props) {
       ...data,
       [e.target.name]: valueToUse,
     });
-    console.log(e.target.value);
+    /*  console.log(e.target.value); */
   }
-  console.log(errors);
+  /* console.log(errors); */
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -102,6 +108,7 @@ export default function Form(props) {
               name="malzeme1"
             />
           </p>
+          {errors.özel !== "" && <div>{errors.özel}</div>}
           <p>
             <label>Sucuk</label>
             <input
