@@ -88,7 +88,8 @@ const CardButton = styled.button`
   cursor: pointer;
 `;
 
-const App = () => {
+const App = (props) => {
+  const { dismi } = props;
   const [siparis, setSiparis] = useState([
     /*  {
       isim: "",
@@ -258,7 +259,7 @@ const App = () => {
           </Route>
 
           <Route exact path="/pizza">
-            <Form handleSubmitCallBack={siparisEkle} />
+            <Form handleSubmitCallBack={siparisEkle} dismi={dismi} />
           </Route>
         </Switch>
       </BrowserRouter>

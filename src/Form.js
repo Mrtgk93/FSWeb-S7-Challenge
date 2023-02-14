@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import styled from "styled-components";
 import { Row } from "reactstrap";
@@ -41,13 +41,13 @@ const formSchema = Yup.object().shape({
     .required("İsim alanı zorunludur")
     .min(2, "İsim en az 2 karakter olmalıdır"),
   boyut: Yup.string().required("lütfen seçiniz"),
-  kenar: Yup.string().required("lütfen seçiniz"),
-  hamur: Yup.string().required("lütfen seçiniz"),
-  malzeme1: Yup.bool().oneOf([false]),
-  malzeme2: Yup.bool().oneOf([false]),
-  malzeme3: Yup.bool().oneOf([false]),
-  malzeme4: Yup.bool().oneOf([false]),
-  özel: Yup.string().notRequired(),
+  kenar: Yup.string(),
+  hamur: Yup.string(),
+  malzeme1: Yup.bool(),
+  malzeme2: Yup.bool(),
+  malzeme3: Yup.bool(),
+  malzeme4: Yup.bool(),
+  özel: Yup.string(),
 });
 
 export default function Form(props) {
@@ -65,7 +65,7 @@ export default function Form(props) {
   });
 
   const [errors, setErrors] = useState({
-    isim: "",
+    isim: "İsim alanı zorunludur",
     boyut: "",
     kenar: "",
     hamur: "",
@@ -75,6 +75,11 @@ export default function Form(props) {
     malzeme4: false,
     özel: "",
   });
+
+  const [dismi, setDismi] = useState(true);
+  useEffect(() => {
+    formSchema.isValid(data).then((valid) => setDismi(!valid));
+  }, [data]);
 
   const checkFormErrors = (name, value) => {
     Yup.reach(formSchema, name)
@@ -184,39 +189,48 @@ export default function Form(props) {
             </label>
           </p>
           <p>
-            <input
-              onChange={changeHandlerName}
-              type="checkbox"
-              name="malzeme1"
-            />
-            <label>Sosis</label>
+            <label>
+              <input
+                onChange={changeHandlerName}
+                type="checkbox"
+                name="malzeme1"
+              />
+              Sosis
+            </label>
           </p>
           {errors.özel !== "" && <div>{errors.özel}</div>}
           <p>
-            <input
-              onChange={changeHandlerName}
-              type="checkbox"
-              name="malzeme2"
-              data-cy="datasucuk"
-            />
-            <label>Sucuk</label>
+            <label>
+              <input
+                onChange={changeHandlerName}
+                type="checkbox"
+                name="malzeme2"
+                data-cy="datasucuk"
+              />
+              Sucuk
+            </label>
           </p>
           <p>
-            <input
-              onChange={changeHandlerName}
-              type="checkbox"
-              name="malzeme3"
-              data-cy="datamantar"
-            />
-            <label>Mantar</label>
+            <label>
+              <input
+                onChange={changeHandlerName}
+                type="checkbox"
+                name="malzeme3"
+                data-cy="datamantar"
+              />
+              Mantar
+            </label>
           </p>
           <p>
-            <input
-              onChange={changeHandlerName}
-              type="checkbox"
-              name="malzeme4"
-            />
-            <label>Biber</label>
+            {" "}
+            <label>
+              <input
+                onChange={changeHandlerName}
+                type="checkbox"
+                name="malzeme4"
+              />
+              Biber
+            </label>
           </p>
 
           <p>
@@ -228,7 +242,12 @@ export default function Form(props) {
               name="özel"
             />
           </p>
-          <SiparisButton type="submit" data-cy="datasubmit" id="order-button">
+          <SiparisButton
+            disabled={dismi}
+            type="submit"
+            data-cy="datasubmit"
+            id="order-button"
+          >
             Siparişlere Ekle
           </SiparisButton>
         </fieldset>
