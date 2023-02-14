@@ -58,12 +58,12 @@ const Sch1 = styled.h1`
   width: 500px;
 `;
 const DivCard = styled.div`
-  height: 40vh;
-  width: 21vw;
+  height: 340px;
+  width: 200px;
   background-color: white;
   color: black;
   border-radius: 30px;
-  margin-top: 2vh;
+  margin-top: 15px;
 `;
 const A = styled.a`
   display: flex;
@@ -72,8 +72,8 @@ const A = styled.a`
 `;
 const CImg = styled.img`
   box-sizing: border-box;
-  width: 21vw;
-  height: 20vh;
+  width: 200px;
+  height: 170px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 `;
@@ -242,8 +242,7 @@ const App = () => {
                     <div>
                       <CImg src="	https://cdn.dpeurasia.com/dms/images/product/TR__T882_434x404.jpg" />
                     </div>
-                    <br />
-                    2 Adet Çikolatalı <br /> Sufle
+                    <br />2 Adet Çikolatalı <br /> Sufle
                     <div>
                       74 TL <br />
                       <br />

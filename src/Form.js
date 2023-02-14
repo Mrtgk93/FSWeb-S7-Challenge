@@ -23,7 +23,10 @@ const fieldStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  backgroundColor: "black",
+  color: "white",
 };
+
 const formStyle = {
   display: "flex",
   flexDirection: "column",
