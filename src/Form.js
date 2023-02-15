@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import styled from "styled-components";
-import { Row } from "reactstrap";
 
 const SiparisButton = styled.button`
   width: 40vw;
@@ -11,15 +10,21 @@ const SiparisButton = styled.button`
   cursor: pointer;
   border-radius: 50px;
   font-size: 18px;
+  margin-top: 30px;
+  &:hover {
+    background-color: lightblue;
+  }
 `;
-const ıconImg = styled.img`
+const IconImg = styled.img`
   margin-right: 5px;
 `;
 const inputStyle = {
   width: "15vw",
 };
+
 const fieldStyle = {
   width: "50vw",
+  height: 680,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -31,9 +36,6 @@ const formStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-};
-const labelStyle = {
-  fontSize: "18px",
 };
 
 const formSchema = Yup.object().shape({
@@ -65,7 +67,7 @@ export default function Form(props) {
   });
 
   const [errors, setErrors] = useState({
-    isim: "İsim alanı zorunludur",
+    isim: "",
     boyut: "",
     kenar: "",
     hamur: "",
@@ -112,7 +114,14 @@ export default function Form(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    return handleSubmitCallBack(data);
+    let input1 = document.getElementById("name-input").value;
+    let input2 = document.getElementById("dropdown").value;
+    if (input1 == "" || input2 == "") {
+      alert("Lütfen tüm alanları doldurun.");
+      return false; // Formu gönderme
+    } else {
+      return handleSubmitCallBack(data);
+    }
   }
 
   return (
@@ -135,7 +144,7 @@ export default function Form(props) {
           </p>
           {errors.isim !== "" && <div>{errors.isim}</div>}
           <p>
-            <ıconImg
+            <IconImg
               className="boyut-icon"
               src="	https://cdn.dpeurasia.com/dms/images/icon/sizes.png"
               alt="sizes"
@@ -153,8 +162,9 @@ export default function Form(props) {
               </select>
             </label>
           </p>
+          {errors.boyut !== "" && <div>{errors.boyut}</div>}
           <p>
-            <ıconImg
+            <IconImg
               className="kenar-icon"
               src="https://cdn.dpeurasia.com/dms/images/icon/sides.png"
               alt="sizes"
@@ -172,7 +182,7 @@ export default function Form(props) {
             </label>
           </p>
           <p>
-            <ıconImg
+            <IconImg
               className="hamur-icon"
               src="	https://cdn.dpeurasia.com/dms/images/icon/doughs.png"
               alt="sizes"
@@ -234,13 +244,18 @@ export default function Form(props) {
           </p>
 
           <p>
-            <label>Özel Seçim:</label>
-            <input
-              onChange={changeHandlerName}
-              type="text"
-              id="special-text"
-              name="özel"
-            />
+            <label>
+              Özel Seçim:
+              <br />
+              <textarea
+                onChange={changeHandlerName}
+                rows="5"
+                cols="30"
+                type="text"
+                id="special-text"
+                name="özel"
+              />
+            </label>
           </p>
           <SiparisButton
             disabled={dismi}
