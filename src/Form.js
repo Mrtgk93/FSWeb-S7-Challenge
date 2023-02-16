@@ -10,7 +10,7 @@ const SiparisButton = styled.button`
   cursor: pointer;
   border-radius: 50px;
   font-size: 18px;
-  margin-top: 30px;
+
   &:hover {
     background-color: lightblue;
   }
@@ -45,10 +45,10 @@ const formSchema = Yup.object().shape({
   boyut: Yup.string().required("lütfen seçiniz"),
   kenar: Yup.string(),
   hamur: Yup.string(),
-  malzeme1: Yup.bool(),
+  /*  malzeme1: Yup.bool(),
   malzeme2: Yup.bool(),
   malzeme3: Yup.bool(),
-  malzeme4: Yup.bool(),
+  malzeme4: Yup.bool(), */
   özel: Yup.string(),
 });
 
@@ -59,10 +59,10 @@ export default function Form(props) {
     boyut: "",
     kenar: "",
     hamur: "",
-    malzeme1: false,
-    malzeme2: false,
+    malzeme1: [],
+    /*  malzeme2: false,
     malzeme3: false,
-    malzeme4: false,
+    malzeme4: false, */
     özel: "",
   });
 
@@ -72,15 +72,17 @@ export default function Form(props) {
     kenar: "",
     hamur: "",
     malzeme1: false,
-    malzeme2: false,
+    /*   malzeme2: false,
     malzeme3: false,
-    malzeme4: false,
+    malzeme4: false, */
     özel: "",
   });
 
   const [dismi, setDismi] = useState(true);
   useEffect(() => {
-    formSchema.isValid(data).then((valid) => setDismi(!valid));
+    setDismi(
+      errors.isim !== "" || errors.boyut !== "" || errors.malzeme1 !== ""
+    );
   }, [data]);
 
   const checkFormErrors = (name, value) => {
@@ -100,28 +102,56 @@ export default function Form(props) {
       });
   };
 
-  function changeHandlerName(e) {
-    let valueToUse =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    checkFormErrors(e.target.name, valueToUse);
+  function handleTextChange(e) {
+    const { name, value } = e.target;
+
+    checkFormErrors(name, value);
     setData({
       ...data,
-      [e.target.name]: valueToUse,
+      [name]: value,
     });
-    /*  console.log(e.target.value); */
   }
-  /* console.log(errors); */
+
+  function changeHandlerName(e) {
+    const { value } = e.target;
+    let yeniMalzeme = null;
+    if (data.malzeme1.includes(value)) {
+      yeniMalzeme = data.malzeme1.filter((d) => d !== value);
+    } else {
+      yeniMalzeme = [...data.malzeme1, value];
+      /*  console.log(e.target.value); */
+    }
+    /* console.log(errors); */
+
+    if (yeniMalzeme.length < 2) {
+      setErrors({
+        ...errors,
+        malzeme1: "en az 2 adet seçmelisiniz",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        malzeme1: "",
+      });
+    }
+    setData({
+      ...data,
+      malzeme1: yeniMalzeme,
+    });
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
-    let input1 = document.getElementById("name-input").value;
+    /*  let input1 = document.getElementById("name-input").value;
     let input2 = document.getElementById("dropdown").value;
-    if (input1 == "" || input2 == "") {
+
+    if (input1 == "" || input2 == "Seciniz") {
       alert("Lütfen tüm alanları doldurun.");
       return false; // Formu gönderme
     } else {
-      return handleSubmitCallBack(data);
-    }
+      
+    } */
+    return handleSubmitCallBack(data);
   }
 
   return (
@@ -134,7 +164,7 @@ export default function Form(props) {
               İsim:
               <input
                 style={inputStyle}
-                onChange={changeHandlerName}
+                onChange={handleTextChange}
                 type="text"
                 name="isim"
                 data-cy="dataisim"
@@ -142,7 +172,9 @@ export default function Form(props) {
               />
             </label>
           </p>
-          {errors.isim !== "" && <div>{errors.isim}</div>}
+          {errors.isim !== "" && (
+            <div style={{ color: "red" }}>{errors.isim}</div>
+          )}
           <p>
             <IconImg
               className="boyut-icon"
@@ -152,13 +184,17 @@ export default function Form(props) {
             />
             <label>
               Pizza Boyutu:
-              <select name="boyut" id="dropdown" onChange={changeHandlerName}>
+              <select name="boyut" id="dropdown" onChange={handleTextChange}>
                 <option value={"Seciniz"}>Seciniz</option>
-                <option name="max" value={data.value}>
+                <option name="max" id="1" value={"Büyük"}>
                   Büyük
                 </option>
-                <option value={data.value}>Orta</option>
-                <option value={data.value}>Küçük </option>
+                <option id="2" value={"Orta"}>
+                  Orta
+                </option>
+                <option id="3" value={"Küçük"}>
+                  Küçük{" "}
+                </option>
               </select>
             </label>
           </p>
@@ -172,7 +208,7 @@ export default function Form(props) {
             />
             <label>
               Kenar Tipi:
-              <select name="kenar" id="kenar" onChange={changeHandlerName}>
+              <select name="kenar" id="kenar" onChange={handleTextChange}>
                 <option value={data.value}>Klasik Kenar</option>
                 <option name="max" value={data.value}>
                   Sarımsak Kenar
@@ -190,7 +226,7 @@ export default function Form(props) {
             />
             <label>
               Hamur Tipi:
-              <select name="hamur" id="hamur" onChange={changeHandlerName}>
+              <select name="hamur" id="hamur" onChange={handleTextChange}>
                 <option value={data.value}>Klasik Hamur</option>
                 <option name="max" value={data.value}>
                   İnce Hamur
@@ -198,58 +234,85 @@ export default function Form(props) {
               </select>
             </label>
           </p>
-          <p>
-            <label>
-              <input
-                onChange={changeHandlerName}
-                type="checkbox"
-                name="malzeme1"
-              />
-              Sosis
-            </label>
-          </p>
-          {errors.özel !== "" && <div>{errors.özel}</div>}
-          <p>
-            <label>
-              <input
-                onChange={changeHandlerName}
-                type="checkbox"
-                name="malzeme2"
-                data-cy="datasucuk"
-              />
-              Sucuk
-            </label>
-          </p>
-          <p>
-            <label>
-              <input
-                onChange={changeHandlerName}
-                type="checkbox"
-                name="malzeme3"
-                data-cy="datamantar"
-              />
-              Mantar
-            </label>
-          </p>
-          <p>
-            {" "}
-            <label>
-              <input
-                onChange={changeHandlerName}
-                type="checkbox"
-                name="malzeme4"
-              />
-              Biber
-            </label>
-          </p>
+          Ekstra Malzeme:
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "80px",
+              height: "200px",
+              alignItems: "flex-start",
+              marginTop: "5px",
+              marginLeft: "10px",
+            }}
+          >
+            <p>
+              <label>
+                <input
+                  onChange={changeHandlerName}
+                  type="checkbox"
+                  name="malzeme1"
+                  checked={data.malzeme1.includes("sosis")}
+                  value="sosis"
+                  id="malzemeler"
+                />
+                Sosis
+              </label>
+            </p>
 
+            <p>
+              <label>
+                <input
+                  onChange={changeHandlerName}
+                  type="checkbox"
+                  name="malzeme1"
+                  value="sucuk"
+                  checked={data.malzeme1.includes("sucuk")}
+                  data-cy="datasucuk"
+                  id="malzemeler"
+                />
+                Sucuk
+              </label>
+            </p>
+
+            <p>
+              <label>
+                <input
+                  onChange={changeHandlerName}
+                  type="checkbox"
+                  name="malzeme1"
+                  value="mantar"
+                  checked={data.malzeme1.includes("mantar")}
+                  data-cy="datamantar"
+                  id="malzemeler"
+                />
+                Mantar
+              </label>
+            </p>
+            <p>
+              <label>
+                <input
+                  onChange={changeHandlerName}
+                  type="checkbox"
+                  name="malzeme1"
+                  value="biber"
+                  id="malzemeler"
+                  checked={data.malzeme1.includes("biber")}
+                />
+                Biber
+              </label>
+            </p>
+          </div>
+          {errors.malzeme1 && (
+            <span style={{ color: "red" }}>{errors.malzeme1}</span>
+          )}
           <p>
             <label>
               Özel Seçim:
               <br />
               <textarea
-                onChange={changeHandlerName}
-                rows="5"
+                onChange={handleTextChange}
+                rows="8"
                 cols="30"
                 type="text"
                 id="special-text"
